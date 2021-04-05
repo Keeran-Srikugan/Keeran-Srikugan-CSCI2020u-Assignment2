@@ -106,7 +106,7 @@ public class FileServerClient extends Stage {
             }else {
                 System.out.println("File being downloaded: "+fileName);
                 //Calls the function to connect to the thread and send in the file to upload
-                FileServerClientUpload(fileName);
+                FileServerClientDownload(fileName);
             }
         });
 
@@ -206,19 +206,24 @@ public class FileServerClient extends Stage {
         networkOut.println("Upload " + fileName);
 
         File inputFile = new File("./input/User/"+fileName);
-        System.out.println(inputFile.getName());
 
+        //Here I print out the contents of the file along with sending the information to the server
         System.out.println("Contents of file:");
+        System.out.println("(start)");
+        networkOut.println("(start)");
         try {
             Scanner scanner = new Scanner(inputFile);
             while(scanner.hasNext()){
-                System.out.println(scanner.next());
-                networkOut.println(scanner.next());
+                String token = scanner.next();
+                System.out.println(token);
+                networkOut.println(token);
             }
-            networkOut.print("finished");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            }
+        }
+        //indicated that the file content has ended
+        System.out.println("(close)");
+        networkOut.println("(close)");
 
         try {
             socket.close();

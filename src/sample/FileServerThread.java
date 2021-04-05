@@ -65,22 +65,36 @@ public class FileServerThread extends Thread {
     protected boolean processCommand(String command, String arguments) {
         if (command.equalsIgnoreCase("Download")) {
             System.out.println("Download function being called with file: " + arguments);
+
+            File inputFile = new File("./input/User/"+arguments);
+            System.out.println(inputFile.getAbsolutePath());
+
             return false;
+
         } else if (command.equalsIgnoreCase("Upload")) {
             System.out.println("Upload function being called with file: " + arguments);
+            System.out.println("Contents of the file being uploaded:");
+            File newFile = new File("./input/Server/"+arguments);
 
-            File newFile = new File("./input/Server"+arguments);
-            System.out.println(newFile.getAbsolutePath());
-            try{
-                while(in.readLine() != null){
-
-
-                }
+            try {
+                FileWriter writeToFile = new FileWriter(newFile);
+                writeToFile.write("Hello");
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            try{
+                FileWriter writeToFile = new FileWriter(newFile);
 
+                String token = in.readLine();
+                while (token != null){
+                    System.out.println(token);
+                    writeToFile.write(token);
+                    token = in.readLine();
+                }
 
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return false;
         }
         return true;
