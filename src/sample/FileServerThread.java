@@ -39,6 +39,7 @@ public class FileServerThread extends Thread {
         }
     }
 
+    //Here is where the input message from
     protected boolean processCommand() {
         String message = null;
         try {
@@ -48,11 +49,8 @@ public class FileServerThread extends Thread {
             return true;
         }
         if (message == null) {
-            System.out.println(message + " here");
             return true;
         }
-
-        System.out.println(message + " here");
 
         StringTokenizer st = new StringTokenizer(message);
         String command = st.nextToken();
@@ -63,12 +61,26 @@ public class FileServerThread extends Thread {
         return processCommand(command, args);
     }
 
+    //This is where the command cases are defined
     protected boolean processCommand(String command, String arguments) {
         if (command.equalsIgnoreCase("Download")) {
-            System.out.println("Download function being called");
+            System.out.println("Download function being called with file: " + arguments);
             return false;
         } else if (command.equalsIgnoreCase("Upload")) {
-            System.out.println("Upload function being called");
+            System.out.println("Upload function being called with file: " + arguments);
+
+            File newFile = new File("./input/Server"+arguments);
+            System.out.println(newFile.getAbsolutePath());
+            try{
+                while(in.readLine() != null){
+
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
             return false;
         }
         return true;

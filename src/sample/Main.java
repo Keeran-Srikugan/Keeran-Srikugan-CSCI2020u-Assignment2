@@ -20,16 +20,12 @@ import java.net.UnknownHostException;
 
 public class Main extends Application {
 
-    private Socket socket = null;
-    private BufferedReader in = null;
-    private PrintWriter networkOut = null;
-    private BufferedReader networkIn = null;
-
     //we can read this from the user too
     public  static String SERVER_ADDRESS = "localhost";
     public  static int    SERVER_PORT = 16789;
     @Override
     public void start(Stage primaryStage){
+        //Here I call an instance of the fileServerClient to run
         FileServerClient serverClient = new FileServerClient();
     }
 

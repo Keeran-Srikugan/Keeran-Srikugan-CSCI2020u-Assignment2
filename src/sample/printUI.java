@@ -38,9 +38,6 @@ public class printUI extends Stage {
     public  static String SERVER_ADDRESS = "localhost";
     public  static int    SERVER_PORT = 16789;
 
-    public printUI(String filePath) {
-        this.filePath = filePath;
-    }
 
     //This is where I draw the UI
     public void newStage(){
