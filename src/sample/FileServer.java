@@ -10,7 +10,7 @@ public class FileServer {
     protected FileServerThread[] threads    = null;
     protected int numClients                = 0;
     protected Vector fileList;
-    protected boolean secondCounter = false;
+    protected int secondCounter = 0;
 
     public static int SERVER_PORT = 16789;
     public static int MAX_CLIENTS = 25;
@@ -26,16 +26,14 @@ public class FileServer {
             threads = new FileServerThread[MAX_CLIENTS];
             while(true) {
                 clientSocket = serverSocket.accept();
-                if (secondCounter == true){
-                    System.out.println("Client #" + (numClients + 1) + " connected.");
+
+                if ((numClients)%2 != 0){
+                    System.out.println("Client #" + (numClients-secondCounter) + " connected.");
+                    secondCounter++;
                 }
                 threads[numClients] = new FileServerThread(clientSocket, fileList);
                 threads[numClients].start();
                 numClients++;
-                if (secondCounter == false){
-                    numClients--;
-                }
-                secondCounter = true;
             }
         } catch (IOException e) {
             System.err.println("IOException while creating server connection");
@@ -49,7 +47,6 @@ public class FileServer {
         files = root.list();
         return files;
     }
-
 
 
     public static void main(String[] args) {

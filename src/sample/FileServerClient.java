@@ -82,10 +82,10 @@ public class FileServerClient extends Stage {
 
         //Upload files
         listView1 = new ListView<>();
-        listView1.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         for (String file : files2) {
             listView1.getItems().addAll(file);
         }
+        listView1.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         //Download files
         listView2 = new ListView<>();
@@ -99,9 +99,9 @@ public class FileServerClient extends Stage {
             String fileName = null;
             fileName = listView2.getSelectionModel().getSelectedItem();
 
-
             //Check if client file was selected
             if(fileName == null){
+                System.out.println("Invalid file chosen");
                 System.exit(0);
             }else {
                 System.out.println("File being downloaded: "+fileName);
@@ -117,6 +117,7 @@ public class FileServerClient extends Stage {
 
             //Check if server file was selected
             if(fileName == null){
+                System.out.println("Invalid file chosen");
                 System.exit(0);
             }else {
                 System.out.println("File being uploaded: " + fileName);
@@ -172,6 +173,32 @@ public class FileServerClient extends Stage {
         }
         //This is where I call the process class
         networkOut.println("Download " + fileName);
+
+        File inputFile = new File("./input/User/"+fileName);
+
+        //Here I print out the contents of the file along with sending the information to the server
+        System.out.println("Contents of file:");
+        System.out.println("(start)");
+        try{
+            FileWriter writeToFile = new FileWriter(inputFile);
+            String line = networkIn.readLine();
+            while(line != null){
+                System.out.println(line);
+                writeToFile.write(line);
+                System.out.println("(end)");
+                writeToFile.close();
+                line = networkIn.readLine();
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.exit(0);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         try {
             socket.close();
         } catch (IOException e) {
@@ -197,11 +224,7 @@ public class FileServerClient extends Stage {
         } catch (IOException e) {
             System.err.println("IOEXception while opening a read/write connection");
         }
-        try {
-            String intro = networkIn.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         //This is where I call the process class
         networkOut.println("Upload " + fileName);
 
@@ -210,11 +233,10 @@ public class FileServerClient extends Stage {
         //Here I print out the contents of the file along with sending the information to the server
         System.out.println("Contents of file:");
         System.out.println("(start)");
-        networkOut.println("(start)");
         try {
             Scanner scanner = new Scanner(inputFile);
             while(scanner.hasNext()){
-                String token = scanner.next();
+                String token = scanner.nextLine();
                 System.out.println(token);
                 networkOut.println(token);
             }
@@ -222,8 +244,7 @@ public class FileServerClient extends Stage {
             e.printStackTrace();
         }
         //indicated that the file content has ended
-        System.out.println("(close)");
-        networkOut.println("(close)");
+        System.out.println("(end)");
 
         try {
             socket.close();

@@ -66,8 +66,25 @@ public class FileServerThread extends Thread {
         if (command.equalsIgnoreCase("Download")) {
             System.out.println("Download function being called with file: " + arguments);
 
-            File inputFile = new File("./input/User/"+arguments);
-            System.out.println(inputFile.getAbsolutePath());
+            File inputFile = new File("./input/Server/"+arguments);
+
+            //Here I print out the contents of the file along with sending the information to the server
+            System.out.println("Contents of file:");
+            System.out.println("(start)");
+            try {
+                String token;
+                Scanner scanner = new Scanner(inputFile);
+                while(scanner.hasNext()){
+                    token = scanner.nextLine();
+                    System.out.println(token);
+                    out.println(token);
+                }
+                out.println((char[]) null);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            //indicated that the file content has ended
+            System.out.println("(end)");
 
             return false;
 
@@ -76,22 +93,20 @@ public class FileServerThread extends Thread {
             System.out.println("Contents of the file being uploaded:");
             File newFile = new File("./input/Server/"+arguments);
 
-            try {
-                FileWriter writeToFile = new FileWriter(newFile);
-                writeToFile.write("Hello");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            System.out.println("(start)");
             try{
                 FileWriter writeToFile = new FileWriter(newFile);
 
                 String token = in.readLine();
                 while (token != null){
                     System.out.println(token);
-                    writeToFile.write(token);
+                    writeToFile.write(token + '\n');
                     token = in.readLine();
                 }
 
+                writeToFile.close();
+                System.out.println("(end)");
             } catch (IOException e) {
                 e.printStackTrace();
             }
