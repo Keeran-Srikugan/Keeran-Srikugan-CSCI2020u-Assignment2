@@ -1,6 +1,7 @@
 #Date: April,5th, 2021
 #Assignment 2
 #Made by: Keeran Srikugan(100750417), Omar Mohamed(100751749)
+Github:https://github.com/Keeran-Srikugan/Keeran-Srikugan-CSCI2020u-Assignment2
 
 The purpose of this assignment is to create a server where files can be interchanged via upload or download between the clients
 machine and the server machine. To run this assignment, you will have to begin by running the server file first, then the FileServerClient
