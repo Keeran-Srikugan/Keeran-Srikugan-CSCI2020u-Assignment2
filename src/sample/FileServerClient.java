@@ -186,8 +186,8 @@ public class FileServerClient extends Stage {
                 System.out.println(line);
                 writeToFile.write(line);
                 System.out.println("(end)");
+                System.out.println("Closing socket");
                 writeToFile.close();
-                line = networkIn.readLine();
                 try {
                     socket.close();
                 } catch (IOException e) {
@@ -245,6 +245,7 @@ public class FileServerClient extends Stage {
         }
         //indicated that the file content has ended
         System.out.println("(end)");
+        System.out.println("Closing socket");
 
         try {
             socket.close();
