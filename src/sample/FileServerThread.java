@@ -11,6 +11,7 @@ public class FileServerThread extends Thread {
 
     protected Vector messages     = null;
 
+    //This is the constructor for the thread
     public FileServerThread(Socket socket, Vector messages) {
         super();
         this.socket = socket;
@@ -23,6 +24,7 @@ public class FileServerThread extends Thread {
         }
     }
 
+    //This is the run function for the thread classs that gets excecuted immediately
     public void run() {
         // initialize interaction
         out.println("Connected to File Server");
@@ -40,6 +42,8 @@ public class FileServerThread extends Thread {
     }
 
     //Here is where the input message from
+    //The message filters for the key word either download or
+    //upload with the file name right after
     protected boolean processCommand() {
         String message = null;
         try {
@@ -52,6 +56,7 @@ public class FileServerThread extends Thread {
             return true;
         }
 
+        //Here is where the input gets seperated
         StringTokenizer st = new StringTokenizer(message);
         String command = st.nextToken();
         String args = null;
@@ -63,14 +68,18 @@ public class FileServerThread extends Thread {
 
     //This is where the command cases are defined
     protected boolean processCommand(String command, String arguments) {
+        //The first if checks for the download keyword
         if (command.equalsIgnoreCase("Download")) {
             System.out.println("Download function being called with file: " + arguments);
 
+            //Path for suerver file
             File inputFile = new File("./input/Server/"+arguments);
 
             //Here I print out the contents of the file along with sending the information to the server
             System.out.println("Contents of file:");
             System.out.println("(start)");
+            //Here the file gets accessed, then the program reads each line
+            //and then sends our the line one by one for the client file to read
             try {
                 String token;
                 Scanner scanner = new Scanner(inputFile);
@@ -88,6 +97,7 @@ public class FileServerThread extends Thread {
 
             return false;
 
+        //Here is the second else where it gets checked for the upload keyword
         } else if (command.equalsIgnoreCase("Upload")) {
             System.out.println("Upload function being called with file: " + arguments);
             System.out.println("Contents of the file being uploaded:");
@@ -96,8 +106,11 @@ public class FileServerThread extends Thread {
 
             System.out.println("(start)");
             try{
+                //Here the file is created
                 FileWriter writeToFile = new FileWriter(newFile);
 
+                //Here it reads the lines being outputted from the client
+                //side and writes it into the new file
                 String token = in.readLine();
                 while (token != null){
                     System.out.println(token);
@@ -105,6 +118,7 @@ public class FileServerThread extends Thread {
                     token = in.readLine();
                 }
 
+                //Here the write gets closed
                 writeToFile.close();
                 System.out.println("(end)");
             } catch (IOException e) {

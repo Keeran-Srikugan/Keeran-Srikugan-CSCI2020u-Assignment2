@@ -94,6 +94,8 @@ public class FileServerClient extends Stage {
         }
         listView2.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
+        //This is where we deal with the upload button being clicked
+        //By using listview, I can save the file name that is selected
         button1.setOnAction(e->{
             //Upload Button
             String fileName = null;
@@ -110,6 +112,8 @@ public class FileServerClient extends Stage {
             }
         });
 
+        //This is where we deal with the download button being clicked
+        //By using listview, I can save the file name that is selected
         button2.setOnAction(e->{
             //Upload Button
             String fileName = null;
@@ -126,6 +130,7 @@ public class FileServerClient extends Stage {
             }
         });
 
+        //Using splitlane so show both filelists (using list pane)
         SplitPane splitPane = new SplitPane();
         splitPane.getItems().addAll(listView1, listView2);
 
@@ -149,6 +154,8 @@ public class FileServerClient extends Stage {
     }
 
 
+    //This is the function that deals with communication between the server and the client when
+    //the client wants to download a file
     public void FileServerClientDownload(String fileName){
         try {
             socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
@@ -174,12 +181,15 @@ public class FileServerClient extends Stage {
         //This is where I call the process class
         networkOut.println("Download " + fileName);
 
+        //This is the directory for the user
         File inputFile = new File("./input/User/"+fileName);
 
         //Here I print out the contents of the file along with sending the information to the server
         System.out.println("Contents of file:");
         System.out.println("(start)");
         try{
+            //Here we write the input from the server(file content) to a newly made file
+            //in the user file
             FileWriter writeToFile = new FileWriter(inputFile);
             String line = networkIn.readLine();
             while(line != null){
@@ -207,6 +217,8 @@ public class FileServerClient extends Stage {
         System.exit(0);
     }
 
+    //This is the function that deals with communication between the server and the client when
+    //the client wants to upload a file to the server
     public void FileServerClientUpload(String fileName){
         try {
             socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
@@ -228,9 +240,11 @@ public class FileServerClient extends Stage {
         //This is where I call the process class
         networkOut.println("Upload " + fileName);
 
+        //This is the directory for the user
         File inputFile = new File("./input/User/"+fileName);
 
         //Here I print out the contents of the file along with sending the information to the server
+        //to use to create the new file in the server
         System.out.println("Contents of file:");
         System.out.println("(start)");
         try {
@@ -247,6 +261,7 @@ public class FileServerClient extends Stage {
         System.out.println("(end)");
         System.out.println("Closing socket");
 
+        //Here I close the socket and the program exits
         try {
             socket.close();
         } catch (IOException e) {
